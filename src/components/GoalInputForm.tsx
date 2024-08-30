@@ -1,6 +1,10 @@
 import React, { useState, FormEvent, ChangeEvent } from 'react';
 
-const GoalInputForm: React.FC = () => {
+interface GoalInputFormProps {
+  onGoalCreated: () => void;
+}
+
+const GoalInputForm: React.FC<GoalInputFormProps> = ({ onGoalCreated }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [startDate, setStartDate] = useState('');
@@ -31,8 +35,8 @@ const GoalInputForm: React.FC = () => {
         throw new Error(data.error || 'Failed to create goal');
       }
 
-      console.log('API Response:', data);
       setSuccessMessage('Goal created successfully!');
+      onGoalCreated(); // Trigger refresh of goal list
 
       // Clear form after successful submission
       setTitle('');
@@ -50,10 +54,9 @@ const GoalInputForm: React.FC = () => {
 
   return (
     <div className="w-full max-w-md mx-auto p-6 bg-white rounded shadow-md">
-      <h2 className="text-2xl font-bold mb-4">Set Your Goal</h2>
+      <h2 className="text-2xl font-bold mb-4 text-gray-800">Set Your Goal</h2>
       {error && <p className="text-red-500 mb-4">{error}</p>}
       {successMessage && <p className="text-green-500 mb-4">{successMessage}</p>}
-      {error && <p className="text-red-500 mb-4">{error}</p>}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <input
@@ -62,7 +65,7 @@ const GoalInputForm: React.FC = () => {
             value={title}
             onChange={(e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
             required
-            className="w-full px-3 py-2 border rounded"
+            className="w-full px-3 py-2 border rounded text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-primary-500"
           />
         </div>
         <div>
@@ -70,26 +73,34 @@ const GoalInputForm: React.FC = () => {
             placeholder="Goal Description (optional)"
             value={description}
             onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)}
-            className="w-full px-3 py-2 border rounded"
+            className="w-full px-3 py-2 border rounded text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-primary-500"
           />
         </div>
         <div>
+          <label htmlFor="startDate" className="block text-sm font-medium text-gray-700 mb-1">
+            Start Date
+          </label>
           <input
+            id="startDate"
             type="date"
             placeholder="Start Date"
             value={startDate}
             onChange={(e: ChangeEvent<HTMLInputElement>) => setStartDate(e.target.value)}
             required
-            className="w-full px-3 py-2 border rounded"
+            className="w-full px-3 py-2 border rounded text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-primary-500"
           />
         </div>
         <div>
+          <label htmlFor="endDate" className="block text-sm font-medium text-gray-700 mb-1">
+            End Date (optional)
+          </label>
           <input
+            id="endDate"
             type="date"
             placeholder="End Date (optional)"
             value={endDate}
             onChange={(e: ChangeEvent<HTMLInputElement>) => setEndDate(e.target.value)}
-            className="w-full px-3 py-2 border rounded"
+            className="w-full px-3 py-2 border rounded text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-primary-500"
           />
         </div>
         <div>
@@ -97,7 +108,7 @@ const GoalInputForm: React.FC = () => {
             value={status}
             onChange={(e: ChangeEvent<HTMLSelectElement>) => setStatus(e.target.value)}
             required
-            className="w-full px-3 py-2 border rounded"
+            className="w-full px-3 py-2 border rounded text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-primary-500"
           >
             <option value="">Select status</option>
             <option value="Not Started">Not Started</option>
@@ -107,7 +118,7 @@ const GoalInputForm: React.FC = () => {
         </div>
         <button 
           type="submit" 
-          className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 disabled:bg-blue-300"
+          className="w-full bg-primary-600 text-white py-2 px-4 rounded hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50"
           disabled={isSubmitting}
         >
           {isSubmitting ? 'Submitting...' : 'Set Goal'}
