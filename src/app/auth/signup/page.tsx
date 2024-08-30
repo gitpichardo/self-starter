@@ -1,9 +1,12 @@
-import React from 'react';
+'use client'
+
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const signupSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -17,15 +20,16 @@ const signupSchema = z.object({
 
 type SignupForm = z.infer<typeof signupSchema>;
 
-const SignupPage: React.FC = () => {
+export default function SignupPage() {
   const router = useRouter();
-  const { register, handleSubmit, formState: { errors } } = useForm<SignupForm>({
+  const [error, setError] = useState<string | null>(null);
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<SignupForm>({
     resolver: zodResolver(signupSchema),
   });
 
   const onSubmit = async (data: SignupForm) => {
     try {
-      const response = await fetch('/api/auth/signup', {
+      const response = await fetch('/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -39,16 +43,17 @@ const SignupPage: React.FC = () => {
         });
 
         if (result?.error) {
-          console.error(result.error);
+          setError(result.error);
         } else {
           router.push('/dashboard');
         }
       } else {
         const errorData = await response.json();
-        console.error(errorData.message);
+        setError(errorData.message || 'An error occurred during signup');
       }
     } catch (error) {
-      console.error('An error occurred:', error);
+      setError('An unexpected error occurred');
+      console.error('Signup error:', error);
     }
   };
 
@@ -116,18 +121,30 @@ const SignupPage: React.FC = () => {
             </div>
           </div>
 
+          {error && (
+            <div className="text-red-500 text-sm text-center">{error}</div>
+          )}
+
           <div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              disabled={isSubmitting}
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
             >
-              Sign up
+              {isSubmitting ? 'Signing up...' : 'Sign up'}
             </button>
           </div>
         </form>
+
+        <div className="text-center">
+          <p className="mt-2 text-sm text-gray-600">
+            Already have an account?{' '}
+            <Link href="/auth/signin" className="font-medium text-indigo-600 hover:text-indigo-500">
+              Sign in
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );
-};
-
-export default SignupPage;
+}

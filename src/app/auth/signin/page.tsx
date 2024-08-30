@@ -1,9 +1,12 @@
-import React from 'react';
+'use client'
+
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const signinSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -12,23 +15,29 @@ const signinSchema = z.object({
 
 type SigninForm = z.infer<typeof signinSchema>;
 
-const SigninPage: React.FC = () => {
+export default function SigninPage() {
   const router = useRouter();
-  const { register, handleSubmit, formState: { errors } } = useForm<SigninForm>({
+  const [error, setError] = useState<string | null>(null);
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<SigninForm>({
     resolver: zodResolver(signinSchema),
   });
 
   const onSubmit = async (data: SigninForm) => {
-    const result = await signIn('credentials', {
-      redirect: false,
-      email: data.email,
-      password: data.password,
-    });
+    try {
+      const result = await signIn('credentials', {
+        redirect: false,
+        email: data.email,
+        password: data.password,
+      });
 
-    if (result?.error) {
-      console.error(result.error);
-    } else {
-      router.push('/dashboard');
+      if (result?.error) {
+        setError('Invalid email or password');
+      } else {
+        router.push('/dashboard');
+      }
+    } catch (error) {
+      setError('An unexpected error occurred');
+      console.error('Sign in error:', error);
     }
   };
 
@@ -70,18 +79,30 @@ const SigninPage: React.FC = () => {
             </div>
           </div>
 
+          {error && (
+            <div className="text-red-500 text-sm text-center">{error}</div>
+          )}
+
           <div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              disabled={isSubmitting}
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
             >
-              Sign in
+              {isSubmitting ? 'Signing in...' : 'Sign in'}
             </button>
           </div>
         </form>
+
+        <div className="text-center">
+          <p className="mt-2 text-sm text-gray-600">
+            Don&apos;t have an account?{' '}
+            <Link href="/auth/signup" className="font-medium text-indigo-600 hover:text-indigo-500">
+              Sign up
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );
-};
-
-export default SigninPage;
+}
