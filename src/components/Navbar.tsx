@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 import Link from 'next/link'
 import { useSession, signOut } from 'next-auth/react'
@@ -43,5 +45,4 @@ const Navbar: React.FC = () => {
     </nav>
   )
 }
-
 export default Navbar
