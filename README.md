@@ -2,7 +2,7 @@
 
 ## Description
 
-This application is a comprehensive self-help tool designed to assist users in setting goals, creating personalized roadmaps, and tracking their progress. Built with JigsawStacks AI-powered APIs, Next.js, TypeScript, and Prisma, it offers a robust and user-friendly interface for personal development.
+This application is a comprehensive self-help tool designed to assist users in setting goals, creating personalized roadmaps, and tracking their progress. Built with JigsawStacks' AI-powered APIs, Next.js and Prisma, it offers a robust and user-friendly interface for personal development.
 
 ## Features
 
@@ -14,6 +14,7 @@ This application is a comprehensive self-help tool designed to assist users in s
 
 ## Technologies Used
 
+- JigsawStack
 - Next.js 14
 - TypeScript
 - Prisma ORM
