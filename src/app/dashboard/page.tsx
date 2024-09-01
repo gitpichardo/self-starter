@@ -59,7 +59,7 @@ const DashboardPage: React.FC = () => {
       <div className="mt-8">
         <h2 className="text-2xl font-bold mb-4">Your Goals</h2>
         {goals.length === 0 ? (
-          <p>You haven't set any goals yet.</p>
+          <p>You haven&apos;t set any goals yet.</p>
         ) : (
           <ul className="space-y-4">
             {goals.map((goal) => (

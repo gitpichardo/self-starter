@@ -146,7 +146,7 @@ const GoalList: React.FC<GoalListProps> = ({ refreshTrigger, onRefresh }) => {
         </button>
       </div>
       {goals.length === 0 ? (
-        <p className="text-gray-600">You haven't set any goals yet.</p>
+        <p className="text-gray-600">You haven&apos;t set any goals yet.</p>
       ) : (
         <ul className="space-y-4">
           {goals.map((goal) => (
