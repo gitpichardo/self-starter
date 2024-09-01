@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/lib/auth';
+import { nextAuthOptions } from '@/lib/auth';
 
 const JIGSAW_STACK_API_KEY = process.env.JIGSAW_STACK_API_KEY;
 const JIGSAW_STACK_API_URL = 'https://api.jigsawstack.com/v1/prompt_engine';
@@ -8,7 +8,7 @@ const JIGSAW_STACK_API_URL = 'https://api.jigsawstack.com/v1/prompt_engine';
 export async function POST(req: NextRequest) {
   console.log('POST /api/generate-roadmap - Start');
   try {
-    const session = await getServerSession(authOptions);
+    const session = await getServerSession(nextAuthOptions);
     if (!session || !session.user) {
       console.log('Unauthorized access attempt');
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -72,7 +72,7 @@ export async function POST(req: NextRequest) {
     
 
     if (createResult.success && createResult.prompt_engine_id) {
-      // Step 2: Run the prompt
+      //Run the prompt
       const runRequestBody = {
         input_values: { goal, timeframe, experience }
       };
