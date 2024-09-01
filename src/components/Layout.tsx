@@ -25,7 +25,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title = 'Self Starter' }) => 
         </main>
         <footer className="bg-white shadow">
           <div className="container mx-auto px-4 py-4 text-center text-gray-600">
-            © 2023 Self Starter. All rights reserved.
+            © 2024 Self Starter. All rights reserved.
           </div>
         </footer>
       </div>
