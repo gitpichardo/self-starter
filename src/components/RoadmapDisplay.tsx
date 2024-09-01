@@ -16,7 +16,7 @@ const RoadmapDisplay: React.FC<RoadmapDisplayProps> = ({ data }) => {
     milestones = Array.isArray(data.milestones) ? data.milestones : undefined;
   }
 
-  // Preprocess the markdown
+ // Preprocess the markdown
   const cleanMarkdown = roadmapText
     .replace(/^(\d+\.|\-)\s*/gm, '') // Remove numbers and bullet points at the start of lines
     .replace(/^#+\s*(\d+\.?\s*)?/gm, ''); // Remove '#' symbols and numbers from headings

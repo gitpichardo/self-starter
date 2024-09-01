@@ -1,5 +1,3 @@
-// src/app/api/generate-roadmap/route.ts
-
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
@@ -43,7 +41,7 @@ export async function POST(req: NextRequest) {
 
     console.log('Sending create request to JigsawStack:', createRequestBody);
 
-    // Step 1: Create the prompt engine
+    //Create the prompt engine
     const createResponse = await fetch(JIGSAW_STACK_API_URL, {
       method: "POST",
       headers: headers,
