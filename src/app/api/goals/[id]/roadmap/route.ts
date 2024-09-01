@@ -1,5 +1,3 @@
-// src/app/api/goals/[id]/route.ts
-
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import { prisma } from '@/lib/prisma';
