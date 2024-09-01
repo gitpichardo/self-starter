@@ -1,5 +1,3 @@
-// src/app/dashboard/page.tsx
-
 'use client'
 
 import React, { useState, useEffect } from 'react';
@@ -70,15 +68,9 @@ const DashboardPage: React.FC = () => {
                 <p>{goal.description}</p>
                 <p>Status: {goal.status}</p>
                 <div className="mt-2">
-                  {goal.roadmap ? (
-                    <Link href={`/goals/${goal.id}`} className="text-green-600 hover:text-green-800">
-                      View Roadmap
-                    </Link>
-                  ) : (
-                    <Link href={`/goals/${goal.id}/roadmap`} className="text-indigo-600 hover:text-indigo-800">
-                      Generate Roadmap
-                    </Link>
-                  )}
+                  <Link href={`/goals/${goal.id}/roadmap`} className="text-indigo-600 hover:text-indigo-800">
+                    View Roadmap
+                  </Link>
                 </div>
               </li>
             ))}

@@ -1,5 +1,7 @@
 // src/app/api/goals/[id]/route.ts
 
+// src/app/api/goals/[id]/route.ts
+
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import { prisma } from '@/lib/prisma';
@@ -39,5 +41,39 @@ export async function GET(
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   } finally {
     console.log(`GET /api/goals/${params.id} - End`);
+  }
+}
+
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  console.log(`PUT /api/goals/${params.id} - Start`);
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user) {
+      console.log('Unauthorized access attempt');
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const goalId = params.id;
+    const updateData = await req.json();
+    console.log(`Updating goal ${goalId} for user: ${session.user.id}`);
+
+    const updatedGoal = await prisma.goal.update({
+      where: {
+        id: goalId,
+        userId: session.user.id,
+      },
+      data: updateData,
+    });
+
+    console.log(`Goal ${goalId} updated successfully`);
+    return NextResponse.json(updatedGoal);
+  } catch (error) {
+    console.error(`Error updating goal ${params.id}:`, error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  } finally {
+    console.log(`PUT /api/goals/${params.id} - End`);
   }
 }
