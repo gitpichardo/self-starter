@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import RoadmapDisplay from '@/components/RoadmapDisplay';
@@ -23,30 +23,30 @@ const GoalDetailsPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchGoal = async () => {
-    if (!goalId) {
-      setError('Goal ID is missing');
-      setIsLoading(false);
-      return;
-    }
-
-    setIsLoading(true);
-    setError(null);
-    try {
-      const response = await fetch(`/api/goals/${goalId}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch goal');
-      }
-      const data = await response.json();
-      setGoal(data);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchGoal = async () => {
+      if (!goalId) {
+        setError('Goal ID is missing');
+        setIsLoading(false);
+        return;
+      }
+  
+      setIsLoading(true);
+      setError(null);
+      try {
+        const response = await fetch(`/api/goals/${goalId}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch goal');
+        }
+        const data = await response.json();
+        setGoal(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An error occurred');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+  
     fetchGoal();
   }, [goalId]);
 

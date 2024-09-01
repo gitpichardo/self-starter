@@ -1,13 +1,19 @@
 'use client'
 
-import React from 'react'
-import Head from 'next/head'
-import Navbar from './Navbar'
+import React from 'react';
+import Head from 'next/head';
+import Navbar from './Navbar';
+import { Poppins } from 'next/font/google';
+
+const poppins = Poppins({
+  weight: ['300', '400', '500', '600', '700'],
+  subsets: ['latin'],
+});
 
 type LayoutProps = {
-  children: React.ReactNode
-  title?: string
-}
+  children: React.ReactNode;
+  title?: string;
+};
 
 const Layout: React.FC<LayoutProps> = ({ children, title = 'Self Starter' }) => {
   return (
@@ -16,9 +22,8 @@ const Layout: React.FC<LayoutProps> = ({ children, title = 'Self Starter' }) => 
         <title>{title}</title>
         <meta charSet="utf-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
       </Head>
-      <div className="min-h-screen bg-gray-100 flex flex-col">
+      <div className={`${poppins.className} min-h-screen bg-gray-100 flex flex-col`}>
         <Navbar />
         <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {children}
@@ -30,7 +35,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title = 'Self Starter' }) => 
         </footer>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;

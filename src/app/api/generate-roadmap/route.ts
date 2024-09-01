@@ -47,15 +47,29 @@ export async function POST(req: NextRequest) {
       headers: headers,
       body: JSON.stringify(createRequestBody),
     });
-
+    
+    const contentType = createResponse.headers.get("content-type");
+    
     if (!createResponse.ok) {
-      const errorData = await createResponse.json();
-      console.error('Error from JigsawStack API:', errorData);
-      throw new Error(JSON.stringify(errorData));
+      const errorText = await createResponse.text();
+      console.error('Error from JigsawStack API:', errorText);
+      throw new Error(`Request failed with status ${createResponse.status}: ${errorText}`);
     }
-
-    const createResult = await createResponse.json();
+    
+    let createResult;
+    
+    if (contentType && contentType.includes("application/json")) {
+      createResult = await createResponse.json();
+    } else {
+      const textResponse = await createResponse.text();
+      console.error('Unexpected non-JSON response:', textResponse);
+      throw new Error('Received non-JSON response');
+    }
+    
     console.log('JigsawStack API create response:', createResult);
+
+    
+    
 
     if (createResult.success && createResult.prompt_engine_id) {
       // Step 2: Run the prompt
