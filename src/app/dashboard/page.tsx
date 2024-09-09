@@ -52,6 +52,7 @@ export default function DashboardPage() {
       fetchGoals();
     }
   }, [status, router, fetchGoals]);
+//check if the user is in demo mode
 
   const handleGoalCreated = useCallback(() => {
     fetchGoals();
