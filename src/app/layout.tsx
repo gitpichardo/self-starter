@@ -1,12 +1,12 @@
 import '../styles/globals.css'
 import { Inter } from 'next/font/google'
-import { AuthProvider } from '../components/AuthProvider'
+import { DemoAuthProvider } from '@/components/DemoAuthProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'Self-Help App',
-  description: 'A comprehensive self-help application',
+  title: 'Self-Help App (Demo)',
+  description: 'A comprehensive self-help application - Demo Version',
 }
 
 export default function RootLayout({
@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <AuthProvider>{children}</AuthProvider>
+        <DemoAuthProvider>{children}</DemoAuthProvider>
       </body>
     </html>
   )
