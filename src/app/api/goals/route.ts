@@ -14,25 +14,28 @@ const goalSchema = z.object({
   roadmap: z.string().nullable().optional(),
 });
 
+const isDemoMode = process.env.DEMO_MODE === 'true';
+const isMockDatabase = process.env.USE_MOCK_DB === 'true';
+
 export async function GET(req: NextRequest) {
-  const session = await getServerSession(nextAuthOptions);
+  let userId: string;
 
-  if (!session || !session.user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
-  // Safely access the user ID
-  const userId = session.user.id || session.user.email;
-
-  if (!userId) {
-    console.error('User ID not found in session:', session);
-    return NextResponse.json({ error: 'User ID not found' }, { status: 400 });
+  if (isDemoMode) {
+    userId = "1"; // Demo user ID
+  } else {
+    const session = await getServerSession(nextAuthOptions);
+    if (!session || !session.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    userId = session.user.id || session.user.email as string;
+    if (!userId) {
+      console.error('User ID not found in session:', session);
+      return NextResponse.json({ error: 'User ID not found' }, { status: 400 });
+    }
   }
 
   try {
     let goals;
-    const isMockDatabase = process.env.USE_MOCK_DB === 'true';
-
     if (isMockDatabase) {
       console.log('Using mock database for fetching goals');
       goals = await mockDb.getGoalsByUserId(userId);
@@ -52,18 +55,20 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const session = await getServerSession(nextAuthOptions);
+  let userId: string;
 
-  if (!session || !session.user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
-  // Safely access the user ID
-  const userId = session.user.id || session.user.email;
-
-  if (!userId) {
-    console.error('User ID not found in session:', session);
-    return NextResponse.json({ error: 'User ID not found' }, { status: 400 });
+  if (isDemoMode) {
+    userId = "1"; // Demo user ID
+  } else {
+    const session = await getServerSession(nextAuthOptions);
+    if (!session || !session.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    userId = session.user.id || session.user.email as string;
+    if (!userId) {
+      console.error('User ID not found in session:', session);
+      return NextResponse.json({ error: 'User ID not found' }, { status: 400 });
+    }
   }
 
   try {
@@ -90,8 +95,6 @@ export async function POST(req: NextRequest) {
     console.log('Goal data:', goalData);
 
     let newGoal;
-    const isMockDatabase = process.env.USE_MOCK_DB === 'true';
-
     if (isMockDatabase) {
       console.log('Using mock database');
       newGoal = await mockDb.createGoal(goalData);
