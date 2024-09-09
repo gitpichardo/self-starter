@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth/next';
 import { prisma } from '@/lib/prisma';
 import { mockDb } from '@/lib/mockDatabase';
-import { nextAuthOptions } from '@/lib/auth';
 import { z } from 'zod';
 
 const goalSchema = z.object({
@@ -14,39 +12,27 @@ const goalSchema = z.object({
   roadmap: z.string().nullable().optional(),
 });
 
-const isDemoMode = process.env.DEMO_MODE === 'true';
 const isMockDatabase = process.env.USE_MOCK_DB === 'true';
 
-export async function GET(req: NextRequest) {
-  let userId: string;
+// Demo user ID
+const DEMO_USER_ID = "1";
 
-  if (isDemoMode) {
-    userId = "1"; // Demo user ID
-  } else {
-    const session = await getServerSession(nextAuthOptions);
-    if (!session || !session.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-    userId = session.user.id || session.user.email as string;
-    if (!userId) {
-      console.error('User ID not found in session:', session);
-      return NextResponse.json({ error: 'User ID not found' }, { status: 400 });
-    }
-  }
+export async function GET(req: NextRequest) {
+  console.log('GET /api/goals - Start');
 
   try {
     let goals;
     if (isMockDatabase) {
       console.log('Using mock database for fetching goals');
-      goals = await mockDb.getGoalsByUserId(userId);
+      goals = await mockDb.getGoalsByUserId(DEMO_USER_ID);
     } else {
       console.log('Using Prisma database for fetching goals');
       goals = await prisma.goal.findMany({
-        where: { userId: userId },
+        where: { userId: DEMO_USER_ID },
       });
     }
 
-    console.log(`Goals fetched successfully for user: ${userId}`);
+    console.log(`Goals fetched successfully for demo user: ${DEMO_USER_ID}`);
     return NextResponse.json({ goals, isMockDatabase });
   } catch (error) {
     console.error('Error fetching goals:', error);
@@ -55,21 +41,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  let userId: string;
-
-  if (isDemoMode) {
-    userId = "1"; // Demo user ID
-  } else {
-    const session = await getServerSession(nextAuthOptions);
-    if (!session || !session.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-    userId = session.user.id || session.user.email as string;
-    if (!userId) {
-      console.error('User ID not found in session:', session);
-      return NextResponse.json({ error: 'User ID not found' }, { status: 400 });
-    }
-  }
+  console.log('POST /api/goals - Start');
 
   try {
     const body = await req.json();
@@ -86,7 +58,7 @@ export async function POST(req: NextRequest) {
 
     const goalData = {
       ...validatedData,
-      userId,
+      userId: DEMO_USER_ID,
       startDate: new Date(validatedData.startDate),
       endDate: validatedData.endDate ? new Date(validatedData.endDate) : null,
       description: validatedData.description || null,
@@ -101,23 +73,15 @@ export async function POST(req: NextRequest) {
       console.log('Created goal in mock DB:', newGoal);
     } else {
       console.log('Using Prisma database');
-      try {
-        newGoal = await prisma.goal.create({
-          data: goalData,
-        });
-      } catch (dbError) {
-        console.error('Database error:', dbError);
-        return NextResponse.json({ error: 'Database Error', details: dbError }, { status: 500 });
-      }
+      newGoal = await prisma.goal.create({
+        data: goalData,
+      });
     }
 
     console.log('Created goal:', newGoal);
     return NextResponse.json({ goal: newGoal, isMockDatabase }, { status: 201 });
   } catch (error) {
     console.error('Error creating goal:', error);
-    if (error instanceof Error) {
-      return NextResponse.json({ error: 'Internal Server Error', details: error.message }, { status: 500 });
-    }
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to create goal' }, { status: 500 });
   }
 }

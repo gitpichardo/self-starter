@@ -14,25 +14,36 @@ const goalSchema = z.object({
   roadmap: z.string().nullable().optional(),
 });
 
+const isDemoMode = process.env.DEMO_MODE === 'true';
+const isMockDatabase = process.env.USE_MOCK_DB === 'true';
+
 export async function GET(req: NextRequest) {
-  const session = await getServerSession(nextAuthOptions);
+  console.log('GET /api/goals - Start');
+  console.log('isDemoMode:', isDemoMode);
+  console.log('isMockDatabase:', isMockDatabase);
 
-  if (!session || !session.user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
-  // Safely access the user ID
-  const userId = session.user.id || session.user.email;
-
-  if (!userId) {
-    console.error('User ID not found in session:', session);
-    return NextResponse.json({ error: 'User ID not found' }, { status: 400 });
-  }
+  let userId: string;
 
   try {
-    let goals;
-    const isMockDatabase = process.env.USE_MOCK_DB === 'true';
+    if (isDemoMode) {
+      userId = "1"; // Demo user ID
+      console.log('Using demo user ID:', userId);
+    } else {
+      const session = await getServerSession(nextAuthOptions);
+      console.log('Session:', JSON.stringify(session, null, 2));
+      if (!session || !session.user) {
+        console.log('No session or user found');
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+      userId = session.user.id || session.user.email as string;
+      if (!userId) {
+        console.error('User ID not found in session:', session);
+        return NextResponse.json({ error: 'User ID not found' }, { status: 400 });
+      }
+      console.log('Using authenticated user ID:', userId);
+    }
 
+    let goals;
     if (isMockDatabase) {
       console.log('Using mock database for fetching goals');
       goals = await mockDb.getGoalsByUserId(userId);
@@ -44,12 +55,16 @@ export async function GET(req: NextRequest) {
     }
 
     console.log(`Goals fetched successfully for user: ${userId}`);
+    console.log('Goals:', JSON.stringify(goals, null, 2));
     return NextResponse.json({ goals, isMockDatabase });
   } catch (error) {
-    console.error('Error fetching goals:', error);
-    return NextResponse.json({ error: 'Failed to fetch goals' }, { status: 500 });
+    console.error('Error in GET /api/goals:', error);
+    return NextResponse.json({ error: 'Failed to fetch goals', details: error }, { status: 500 });
+  } finally {
+    console.log('GET /api/goals - End');
   }
 }
+
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(nextAuthOptions);
