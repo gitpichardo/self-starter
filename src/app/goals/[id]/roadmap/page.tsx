@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import RoadmapDisplay from '@/components/RoadmapDisplay';
@@ -26,35 +26,37 @@ const ViewRoadmapPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showRegenerateForm, setShowRegenerateForm] = useState(false);
+  const [isMockDatabase, setIsMockDatabase] = useState(false);
+
+  const fetchGoal = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(`/api/goals/${goalId}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch goal');
+      }
+      const data = await response.json();
+      setGoal(data.goal);
+      setIsMockDatabase(data.isMockDatabase);
+      if (data.goal.roadmap) {
+        try {
+          setParsedRoadmap(JSON.parse(data.goal.roadmap));
+        } catch (parseError) {
+          console.error('Error parsing roadmap:', parseError);
+          setError('Error parsing roadmap data');
+        }
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [goalId]);
 
   useEffect(() => {
-    const fetchGoal = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const response = await fetch(`/api/goals/${goalId}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch goal');
-        }
-        const data = await response.json();
-        setGoal(data);
-        if (data.roadmap) {
-          try {
-            setParsedRoadmap(JSON.parse(data.roadmap));
-          } catch (parseError) {
-            console.error('Error parsing roadmap:', parseError);
-            setError('Error parsing roadmap data');
-          }
-        }
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchGoal();
-  }, [goalId]);
+  }, [fetchGoal]);
 
   const handleRegenerateRoadmap = async (timeframe: string, experience: string) => {
     setIsLoading(true);
@@ -91,8 +93,7 @@ const ViewRoadmapPage: React.FC = () => {
         throw new Error('Failed to update goal with new roadmap');
       }
 
-      const updatedGoal = await updateResponse.json();
-      setGoal(updatedGoal);
+      await fetchGoal(); // Refetch the goal to get the latest data
       setParsedRoadmap(newRoadmap);
       setShowRegenerateForm(false);
     } catch (err) {
@@ -108,6 +109,13 @@ const ViewRoadmapPage: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      {isMockDatabase && (
+        <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4" role="alert">
+          <p className="font-bold">Note:</p>
+          <p>You are viewing data from a mock database for demonstration purposes.</p>
+        </div>
+      )}
+
       <h1 className="text-3xl font-bold mb-8 text-center">{goal.title}</h1>
       
       <div className="bg-white shadow-lg rounded-lg p-6 mb-8">
@@ -151,10 +159,15 @@ const ViewRoadmapPage: React.FC = () => {
         </div>
       )}
 
-      <div className="mt-8 text-center">
+      <div className="mt-8 text-center space-x-4">
         <Link href="/dashboard" className="text-indigo-600 hover:text-indigo-800 transition duration-300">
           Back to Dashboard
         </Link>
+        {/*
+        <Link href={`/goals/${goalId}`} className="text-indigo-600 hover:text-indigo-800 transition duration-300">
+          View Goal Details
+        </Link>
+        */}
       </div>
     </div>
   );

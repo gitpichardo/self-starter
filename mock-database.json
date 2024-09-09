@@ -1,0 +1,41 @@
+{
+  "users": [],
+  "goals": [
+    {
+      "id": "87138860-0cea-4cfe-b973-2dfb8a1e5c1a",
+      "createdAt": "2024-09-09T21:40:56.386Z",
+      "updatedAt": "2024-09-09T21:55:23.941Z",
+      "title": "Run a 30 k",
+      "description": "Learn to run a 30K",
+      "startDate": "2024-09-10T00:00:00.000Z",
+      "endDate": null,
+      "status": "Not Started",
+      "userId": "1725903710187",
+      "roadmap": "{\"roadmap\":\"1. Initial Assessment (Weeks 1-2):\\n   - Get a medical check-up to ensure you are fit to start running.\\n   - Purchase appropriate running gear, including shoes and clothing.\\n\\n2. Base Building Phase (Weeks 3-12):\\n   - Start with walking and light jogging, aiming for 3-4 sessions per week.\\n   - Gradually increase the duration of your runs, aiming to run continuously for 20-30 minutes by the end of this phase.\\n   - Incorporate strength training exercises twice a week to build muscle and prevent injury.\\n\\n3. Endurance Building Phase (Weeks 13-24):\\n   - Increase your running frequency to 4-5 times per week.\\n   - Introduce one long run per week, gradually increasing the distance by 1-2 km each week.\\n   - Continue strength training and add flexibility exercises.\\n\\n4. Speed and Stamina Phase (Weeks 25-36):\\n   - Incorporate interval training and tempo runs to improve speed and stamina.\\n   - Maintain one long run per week, aiming to reach 20-25 km by the end of this phase.\\n   - Continue with strength and flexibility exercises.\\n\\n5. Peak Training Phase (Weeks 37-48):\\n   - Focus on running 5-6 times per week, with one long run reaching up to 28-30 km.\\n   - Include hill training and speed work to build strength and endurance.\\n   - Taper your training in the last 2-3 weeks to allow your body to recover before the race.\\n\\n6. Race Preparation (Weeks 49-52):\\n   - Plan your race day strategy, including pacing and nutrition.\\n   - Ensure you are well-rested and hydrated leading up to the race.\\n   - Run a few short, easy runs to keep your legs fresh.\\n\\n7. Race Day:\\n   - Follow your race day plan and enjoy the experience!\\n\\n8. Post-Race Recovery:\\n   - Allow your body to recover with light activities and rest.\\n   - Reflect on your achievement and plan for future goals.\",\"milestones\":\"1. Complete a 5k run (Week 12)\\n2. Complete a 10k run (Week 24)\\n3. Complete a 15k run (Week 36)\\n4. Complete a 20k run (Week 42)\\n5. Complete a 25k run (Week 48)\\n6. Complete the 30k race (Week 52)\"}"
+    }
+  ],
+  "roadmaps": [
+    {
+      "id": "1581b868-b8ae-4bb5-9233-16aa8d82997d",
+      "userId": "1725903710187",
+      "goalId": "Run a 30 k",
+      "content": {
+        "roadmap": "1. Initial Assessment and Goal Setting (Week 1):\n   - Conduct a fitness assessment to determine current running level.\n   - Set specific goals for the 30k run, including target time and pace.\n\n2. Base Building Phase (Weeks 2-6):\n   - Increase weekly mileage by 10-15% each week.\n   - Include 3-4 runs per week, focusing on easy and moderate paces.\n   - Incorporate cross-training activities like cycling or swimming.\n\n3. Strength and Endurance Phase (Weeks 7-12):\n   - Introduce one long run per week, gradually increasing distance.\n   - Add one tempo run per week to improve lactate threshold.\n   - Continue cross-training and add strength training exercises.\n\n4. Speed and Race-Specific Training (Weeks 13-18):\n   - Include interval training sessions to improve speed.\n   - Perform race-pace runs to get accustomed to target pace.\n   - Maintain long runs, reaching up to 25-28k.\n\n5. Tapering Phase (Weeks 19-22):\n   - Gradually reduce mileage to allow for recovery.\n   - Focus on maintaining intensity with shorter, faster runs.\n   - Prioritize rest and nutrition.\n\n6. Race Week (Week 23):\n   - Finalize race strategy and logistics.\n   - Perform short, easy runs to stay loose.\n   - Ensure proper hydration and nutrition leading up to race day.\n\n7. Post-Race Recovery (Week 24):\n   - Allow for rest and recovery.\n   - Perform light activities like walking or yoga.\n   - Reflect on the race and set new goals.",
+        "milestones": "1. Complete initial fitness assessment and goal setting (Week 1).\n2. Achieve a weekly mileage of 40-50k (End of Week 6).\n3. Complete a 20k long run (End of Week 12).\n4. Run a 25-28k long run at race pace (End of Week 18).\n5. Successfully taper and feel rested (End of Week 22).\n6. Complete the 30k race (Week 23).\n7. Recover and set new goals (Week 24)."
+      },
+      "createdAt": "2024-09-09T21:51:18.984Z",
+      "updatedAt": "2024-09-09T21:51:18.984Z"
+    },
+    {
+      "id": "091ac57d-d533-4cb6-9464-0e941e69220a",
+      "userId": "1725903710187",
+      "goalId": "Run a 30 k",
+      "content": {
+        "roadmap": "1. Initial Assessment (Weeks 1-2):\n   - Get a medical check-up to ensure you are fit to start running.\n   - Purchase appropriate running gear, including shoes and clothing.\n\n2. Base Building Phase (Weeks 3-12):\n   - Start with walking and light jogging, aiming for 3-4 sessions per week.\n   - Gradually increase the duration of your runs, aiming to run continuously for 20-30 minutes by the end of this phase.\n   - Incorporate strength training exercises twice a week to build muscle and prevent injury.\n\n3. Endurance Building Phase (Weeks 13-24):\n   - Increase your running frequency to 4-5 times per week.\n   - Introduce one long run per week, gradually increasing the distance by 1-2 km each week.\n   - Continue strength training and add flexibility exercises.\n\n4. Speed and Stamina Phase (Weeks 25-36):\n   - Incorporate interval training and tempo runs to improve speed and stamina.\n   - Maintain one long run per week, aiming to reach 20-25 km by the end of this phase.\n   - Continue with strength and flexibility exercises.\n\n5. Peak Training Phase (Weeks 37-48):\n   - Focus on running 5-6 times per week, with one long run reaching up to 28-30 km.\n   - Include hill training and speed work to build strength and endurance.\n   - Taper your training in the last 2-3 weeks to allow your body to recover before the race.\n\n6. Race Preparation (Weeks 49-52):\n   - Plan your race day strategy, including pacing and nutrition.\n   - Ensure you are well-rested and hydrated leading up to the race.\n   - Run a few short, easy runs to keep your legs fresh.\n\n7. Race Day:\n   - Follow your race day plan and enjoy the experience!\n\n8. Post-Race Recovery:\n   - Allow your body to recover with light activities and rest.\n   - Reflect on your achievement and plan for future goals.",
+        "milestones": "1. Complete a 5k run (Week 12)\n2. Complete a 10k run (Week 24)\n3. Complete a 15k run (Week 36)\n4. Complete a 20k run (Week 42)\n5. Complete a 25k run (Week 48)\n6. Complete the 30k race (Week 52)"
+      },
+      "createdAt": "2024-09-09T21:55:23.874Z",
+      "updatedAt": "2024-09-09T21:55:23.874Z"
+    }
+  ]
+}
