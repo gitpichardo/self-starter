@@ -4,14 +4,26 @@
     {
       "id": "87138860-0cea-4cfe-b973-2dfb8a1e5c1a",
       "createdAt": "2024-09-09T21:40:56.386Z",
-      "updatedAt": "2024-09-09T21:55:23.941Z",
+      "updatedAt": "2024-09-09T22:15:15.113Z",
       "title": "Run a 30 k",
       "description": "Learn to run a 30K",
       "startDate": "2024-09-10T00:00:00.000Z",
       "endDate": null,
       "status": "Not Started",
       "userId": "1725903710187",
-      "roadmap": "{\"roadmap\":\"1. Initial Assessment (Weeks 1-2):\\n   - Get a medical check-up to ensure you are fit to start running.\\n   - Purchase appropriate running gear, including shoes and clothing.\\n\\n2. Base Building Phase (Weeks 3-12):\\n   - Start with walking and light jogging, aiming for 3-4 sessions per week.\\n   - Gradually increase the duration of your runs, aiming to run continuously for 20-30 minutes by the end of this phase.\\n   - Incorporate strength training exercises twice a week to build muscle and prevent injury.\\n\\n3. Endurance Building Phase (Weeks 13-24):\\n   - Increase your running frequency to 4-5 times per week.\\n   - Introduce one long run per week, gradually increasing the distance by 1-2 km each week.\\n   - Continue strength training and add flexibility exercises.\\n\\n4. Speed and Stamina Phase (Weeks 25-36):\\n   - Incorporate interval training and tempo runs to improve speed and stamina.\\n   - Maintain one long run per week, aiming to reach 20-25 km by the end of this phase.\\n   - Continue with strength and flexibility exercises.\\n\\n5. Peak Training Phase (Weeks 37-48):\\n   - Focus on running 5-6 times per week, with one long run reaching up to 28-30 km.\\n   - Include hill training and speed work to build strength and endurance.\\n   - Taper your training in the last 2-3 weeks to allow your body to recover before the race.\\n\\n6. Race Preparation (Weeks 49-52):\\n   - Plan your race day strategy, including pacing and nutrition.\\n   - Ensure you are well-rested and hydrated leading up to the race.\\n   - Run a few short, easy runs to keep your legs fresh.\\n\\n7. Race Day:\\n   - Follow your race day plan and enjoy the experience!\\n\\n8. Post-Race Recovery:\\n   - Allow your body to recover with light activities and rest.\\n   - Reflect on your achievement and plan for future goals.\",\"milestones\":\"1. Complete a 5k run (Week 12)\\n2. Complete a 10k run (Week 24)\\n3. Complete a 15k run (Week 36)\\n4. Complete a 20k run (Week 42)\\n5. Complete a 25k run (Week 48)\\n6. Complete the 30k race (Week 52)\"}"
+      "roadmap": "{\"roadmap\":\"Week 1: \\n- Day 1: Run 3 km at a comfortable pace. \\n- Day 2: Rest or cross-train (e.g., cycling, swimming). \\n- Day 3: Run 4 km at a comfortable pace. \\n- Day 4: Rest or cross-train. \\n- Day 5: Run 5 km at a comfortable pace. \\n- Day 6: Rest or cross-train. \\n- Day 7: Run 6 km at a comfortable pace. \\n\\nWeek 2: \\n- Day 1: Run 4 km at a comfortable pace. \\n- Day 2: Rest or cross-train. \\n- Day 3: Run 5 km at a comfortable pace. \\n- Day 4: Rest or cross-train. \\n- Day 5: Run 6 km at a comfortable pace. \\n- Day 6: Rest or cross-train. \\n- Day 7: Run 8 km at a comfortable pace. \\n\\nWeek 3: \\n- Day 1: Run 5 km at a comfortable pace. \\n- Day 2: Rest or cross-train. \\n- Day 3: Run 6 km at a comfortable pace. \\n- Day 4: Rest or cross-train. \\n- Day 5: Run 8 km at a comfortable pace. \\n- Day 6: Rest or cross-train. \\n- Day 7: Run 10 km at a comfortable pace. \\n\\nWeek 4: \\n- Day 1: Run 6 km at a comfortable pace. \\n- Day 2: Rest or cross-train. \\n- Day 3: Run 8 km at a comfortable pace. \\n- Day 4: Rest or cross-train. \\n- Day 5: Run 10 km at a comfortable pace. \\n- Day 6: Rest or cross-train. \\n- Day 7: Run 12 km at a comfortable pace. \\n\\nFinal Preparation: \\n- Tapering: Reduce the distance of your runs in the last few days before the 30 km run to ensure your body is well-rested. \\n- Nutrition: Focus on a balanced diet rich in carbohydrates, proteins, and healthy fats. Stay hydrated. \\n- Mental Preparation: Visualize the run, set a positive mindset, and plan your pacing strategy.\",\"milestones\":\"1. Complete a 6 km run by the end of Week 1. \\n2. Complete an 8 km run by the end of Week 2. \\n3. Complete a 10 km run by the end of Week 3. \\n4. Complete a 12 km run by the end of Week 4. \\n5. Successfully run 30 km at the end of the month.\"}"
+    },
+    {
+      "id": "a2fde5ae-9e6e-44c6-9a5b-a1c0cf85f1bb",
+      "createdAt": "2024-09-09T22:14:48.668Z",
+      "updatedAt": "2024-09-09T22:14:48.668Z",
+      "title": "Run a 30k",
+      "description": null,
+      "startDate": "2024-09-11T00:00:00.000Z",
+      "endDate": null,
+      "status": "Not Started",
+      "userId": "1725903710187",
+      "roadmap": null
     }
   ],
   "roadmaps": [
@@ -36,6 +48,17 @@
       },
       "createdAt": "2024-09-09T21:55:23.874Z",
       "updatedAt": "2024-09-09T21:55:23.874Z"
+    },
+    {
+      "id": "33ecc66d-4923-44de-ad9c-a54750acf3e5",
+      "userId": "1725903710187",
+      "goalId": "Run a 30 k",
+      "content": {
+        "roadmap": "Week 1: \n- Day 1: Run 3 km at a comfortable pace. \n- Day 2: Rest or cross-train (e.g., cycling, swimming). \n- Day 3: Run 4 km at a comfortable pace. \n- Day 4: Rest or cross-train. \n- Day 5: Run 5 km at a comfortable pace. \n- Day 6: Rest or cross-train. \n- Day 7: Run 6 km at a comfortable pace. \n\nWeek 2: \n- Day 1: Run 4 km at a comfortable pace. \n- Day 2: Rest or cross-train. \n- Day 3: Run 5 km at a comfortable pace. \n- Day 4: Rest or cross-train. \n- Day 5: Run 6 km at a comfortable pace. \n- Day 6: Rest or cross-train. \n- Day 7: Run 8 km at a comfortable pace. \n\nWeek 3: \n- Day 1: Run 5 km at a comfortable pace. \n- Day 2: Rest or cross-train. \n- Day 3: Run 6 km at a comfortable pace. \n- Day 4: Rest or cross-train. \n- Day 5: Run 8 km at a comfortable pace. \n- Day 6: Rest or cross-train. \n- Day 7: Run 10 km at a comfortable pace. \n\nWeek 4: \n- Day 1: Run 6 km at a comfortable pace. \n- Day 2: Rest or cross-train. \n- Day 3: Run 8 km at a comfortable pace. \n- Day 4: Rest or cross-train. \n- Day 5: Run 10 km at a comfortable pace. \n- Day 6: Rest or cross-train. \n- Day 7: Run 12 km at a comfortable pace. \n\nFinal Preparation: \n- Tapering: Reduce the distance of your runs in the last few days before the 30 km run to ensure your body is well-rested. \n- Nutrition: Focus on a balanced diet rich in carbohydrates, proteins, and healthy fats. Stay hydrated. \n- Mental Preparation: Visualize the run, set a positive mindset, and plan your pacing strategy.",
+        "milestones": "1. Complete a 6 km run by the end of Week 1. \n2. Complete an 8 km run by the end of Week 2. \n3. Complete a 10 km run by the end of Week 3. \n4. Complete a 12 km run by the end of Week 4. \n5. Successfully run 30 km at the end of the month."
+      },
+      "createdAt": "2024-09-09T22:15:15.043Z",
+      "updatedAt": "2024-09-09T22:15:15.043Z"
     }
   ]
 }
