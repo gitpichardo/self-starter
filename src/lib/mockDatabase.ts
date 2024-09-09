@@ -1,7 +1,28 @@
-import { User, Goal } from "@prisma/client";
 import { v4 as uuidv4 } from 'uuid';
 import fs from 'fs/promises';
 import path from 'path';
+
+interface User {
+  id: string;
+  email: string;
+  name: string | null;
+  password: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+interface Goal {
+  id: string;
+  userId: string;
+  title: string;
+  description: string | null;
+  startDate: Date;
+  endDate: Date | null;
+  status: string;
+  roadmap: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 interface Roadmap {
   id: string;
@@ -46,23 +67,36 @@ class MockDatabase {
       this.roadmaps = parsedData.roadmaps;
       console.log('Mock DB: Data loaded successfully');
     } catch (error) {
-      console.log('Mock DB: No existing data found, initializing with empty state');
-      // Initialize with default data if file doesn't exist
-      this.goals = [
-        {
-          id: '87138860-0cea-4cfe-b973-2dfb8a1e5c1a',
-          createdAt: new Date('2024-09-09T21:40:56.386Z'),
-          updatedAt: new Date('2024-09-09T21:40:56.386Z'),
-          title: 'Run a 30 k',
-          description: 'Learn to run a 30K',
-          startDate: new Date('2024-09-10T00:00:00.000Z'),
-          endDate: null,
-          status: 'Not Started',
-          userId: '1725903710187',
-          roadmap: null
-        }
-      ];
+      console.log('Mock DB: No existing data found, initializing with sample data');
+      this.initializeSampleData();
     }
+  }
+
+  private initializeSampleData() {
+    const sampleUser: User = {
+      id: "1",
+      email: "demo@example.com",
+      name: "Demo User",
+      password: "demopassword",
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+
+    const sampleGoal: Goal = {
+      id: uuidv4(),
+      userId: "1",
+      title: "Sample Goal",
+      description: "This is a sample goal",
+      startDate: new Date(),
+      endDate: null,
+      status: "In Progress",
+      roadmap: null,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+
+    this.users.push(sampleUser);
+    this.goals.push(sampleGoal);
   }
 
   private async saveData() {
@@ -91,43 +125,42 @@ class MockDatabase {
     return this.users.find(user => user.email === email) || null;
   }
 
-  async createGoal(data: Omit<Goal, "id" | "createdAt" | "updatedAt">): Promise<Goal> {
+  async getGoalsByUserId(userId: string): Promise<Goal[]> {
+    console.log(`MockDB: Fetching goals for user ${userId}`);
+    const userGoals = this.goals.filter(goal => goal.userId === userId);
+    console.log(`MockDB: Found ${userGoals.length} goals`);
+    return userGoals;
+  }
+
+  async createGoal(goalData: Omit<Goal, 'id' | 'createdAt' | 'updatedAt'>): Promise<Goal> {
     const newGoal: Goal = {
       id: uuidv4(),
       createdAt: new Date(),
       updatedAt: new Date(),
-      ...data,
+      ...goalData,
     };
     this.goals.push(newGoal);
-    console.log('Mock DB: Created new goal:', newGoal);
+    console.log(`MockDB: Created new goal with id ${newGoal.id}`);
     await this.saveData();
     return newGoal;
   }
 
   async findGoalById(id: string): Promise<Goal | null> {
-    console.log('Mock DB: All goals:', this.goals);
     const goal = this.goals.find(g => g.id === id);
-    console.log(`Mock DB: Finding goal with id ${id}:`, goal || 'Not found');
+    console.log(`MockDB: Finding goal with id ${id}:`, goal || 'Not found');
     return goal || null;
   }
 
   async updateGoal(id: string, data: Partial<Goal>): Promise<Goal | null> {
     const index = this.goals.findIndex(g => g.id === id);
     if (index === -1) {
-      console.log(`Mock DB: Goal with id ${id} not found for update`);
+      console.log(`MockDB: Goal with id ${id} not found for update`);
       return null;
     }
     this.goals[index] = { ...this.goals[index], ...data, updatedAt: new Date() };
-    console.log(`Mock DB: Updated goal:`, this.goals[index]);
+    console.log(`MockDB: Updated goal:`, this.goals[index]);
     await this.saveData();
     return this.goals[index];
-  }
-
-  async getGoalsByUserId(userId: string): Promise<Goal[]> {
-    console.log(`Fetching goals for user: ${userId}`);
-    const userGoals = this.goals.filter(goal => goal.userId === userId);
-    console.log(`Found ${userGoals.length} goals for user ${userId}`);
-    return userGoals;
   }
 
   async deleteGoal(id: string): Promise<boolean> {
@@ -140,19 +173,7 @@ class MockDatabase {
     return deleted;
   }
 
-  async addMockGoal(goal: Omit<Goal, 'id' | 'createdAt' | 'updatedAt'>): Promise<Goal> {
-    const newGoal: Goal = {
-      id: uuidv4(),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      ...goal
-    };
-    this.goals.push(newGoal);
-    console.log(`Added mock goal: ${newGoal.id} for user: ${newGoal.userId}`);
-    await this.saveData();
-    return newGoal;
-  }
-  
+  // Roadmap methods remain the same
   async saveRoadmap(userId: string, goalId: string, roadmapData: { roadmap: string; milestones: string[] }): Promise<Roadmap> {
     const newRoadmap: Roadmap = {
       id: uuidv4(),
@@ -170,8 +191,7 @@ class MockDatabase {
   }
 
   async getRoadmapByGoalId(userId: string, goalId: string): Promise<Roadmap | null> {
-    const roadmap = this.roadmaps.find(r => r.userId === userId && r.goalId === goalId);
-    return roadmap || null;
+    return this.roadmaps.find(r => r.userId === userId && r.goalId === goalId) || null;
   }
 
   async getRoadmapsByUserId(userId: string): Promise<Roadmap[]> {
