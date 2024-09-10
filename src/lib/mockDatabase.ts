@@ -1,6 +1,4 @@
 import { v4 as uuidv4 } from 'uuid';
-import fs from 'fs/promises';
-import path from 'path';
 
 interface User {
   id: string;
@@ -18,7 +16,7 @@ interface Goal {
   description: string | null;
   startDate: Date;
   endDate: Date | null;
-  status: string;
+  status: 'Not Started' | 'In Progress' | 'Completed';
   roadmap: string | null;
   createdAt: Date;
   updatedAt: Date;
@@ -36,40 +34,13 @@ interface Roadmap {
   updatedAt: Date;
 }
 
-interface MockDatabaseData {
-  users: User[];
-  goals: Goal[];
-  roadmaps: Roadmap[];
-}
-
 class MockDatabase {
   private users: User[] = [];
   private goals: Goal[] = [];
   private roadmaps: Roadmap[] = [];
-  private readonly dataFilePath: string;
 
   constructor() {
-    this.dataFilePath = path.join(process.cwd(), 'mock-database.json');
-    this.loadData();
-  }
-
-  private async loadData() {
-    try {
-      const data = await fs.readFile(this.dataFilePath, 'utf-8');
-      const parsedData: MockDatabaseData = JSON.parse(data, (key, value) => {
-        if (key === 'createdAt' || key === 'updatedAt' || key === 'startDate' || key === 'endDate') {
-          return value ? new Date(value) : null;
-        }
-        return value;
-      });
-      this.users = parsedData.users;
-      this.goals = parsedData.goals;
-      this.roadmaps = parsedData.roadmaps;
-      console.log('Mock DB: Data loaded successfully');
-    } catch (error) {
-      console.log('Mock DB: No existing data found, initializing with sample data');
-      this.initializeSampleData();
-    }
+    this.initializeSampleData();
   }
 
   private initializeSampleData() {
@@ -99,16 +70,6 @@ class MockDatabase {
     this.goals.push(sampleGoal);
   }
 
-  private async saveData() {
-    const data: MockDatabaseData = {
-      users: this.users,
-      goals: this.goals,
-      roadmaps: this.roadmaps
-    };
-    await fs.writeFile(this.dataFilePath, JSON.stringify(data, null, 2));
-    console.log('Mock DB: Data saved successfully');
-  }
-
   async createUser(data: Omit<User, "id" | "createdAt" | "updatedAt">): Promise<User> {
     const newUser: User = {
       id: uuidv4(),
@@ -117,7 +78,6 @@ class MockDatabase {
       ...data,
     };
     this.users.push(newUser);
-    await this.saveData();
     return newUser;
   }
 
@@ -132,14 +92,12 @@ class MockDatabase {
         ...goalData,
         createdAt: new Date(),
         updatedAt: new Date(),
-        // Ensure these fields are properly typed
         startDate: new Date(goalData.startDate),
         endDate: goalData.endDate ? new Date(goalData.endDate) : null,
         status: goalData.status as 'Not Started' | 'In Progress' | 'Completed',
       };
       this.goals.push(newGoal);
       console.log(`MockDB: Created new goal:`, JSON.stringify(newGoal, null, 2));
-      await this.saveData();
       return newGoal;
     } catch (error) {
       console.error('Error in MockDB createGoal:', error);
@@ -169,21 +127,15 @@ class MockDatabase {
     }
     this.goals[index] = { ...this.goals[index], ...data, updatedAt: new Date() };
     console.log(`MockDB: Updated goal:`, this.goals[index]);
-    await this.saveData();
     return this.goals[index];
   }
 
   async deleteGoal(id: string): Promise<boolean> {
     const initialLength = this.goals.length;
     this.goals = this.goals.filter(g => g.id !== id);
-    const deleted = this.goals.length < initialLength;
-    if (deleted) {
-      await this.saveData();
-    }
-    return deleted;
+    return this.goals.length < initialLength;
   }
 
-  // Roadmap methods remain the same
   async saveRoadmap(userId: string, goalId: string, roadmapData: { roadmap: string; milestones: string[] }): Promise<Roadmap> {
     const newRoadmap: Roadmap = {
       id: uuidv4(),
@@ -196,7 +148,6 @@ class MockDatabase {
 
     this.roadmaps.push(newRoadmap);
     console.log(`Roadmap saved for user ${userId}, goal ${goalId}`);
-    await this.saveData();
     return newRoadmap;
   }
 
@@ -222,7 +173,6 @@ class MockDatabase {
     };
 
     console.log(`Roadmap updated for user ${userId}, goal ${goalId}`);
-    await this.saveData();
     return this.roadmaps[index];
   }
 
@@ -232,7 +182,6 @@ class MockDatabase {
     const deleted = this.roadmaps.length < initialLength;
     if (deleted) {
       console.log(`Roadmap deleted for user ${userId}, goal ${goalId}`);
-      await this.saveData();
     }
     return deleted;
   }
