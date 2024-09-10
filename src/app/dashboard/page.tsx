@@ -93,8 +93,8 @@ const handleGoalCreated = useCallback(async (goalData: any) => {
           Note: You are currently using a mock database for demonstration purposes.
         </p>
       )}
+
       
-      console.log('Rendering DashboardPage, goals:', goals)
       <GoalInputForm onGoalCreated={handleGoalCreated} />
       
       <h2 className="text-xl font-semibold mb-2 mt-8">Your Goals</h2>
