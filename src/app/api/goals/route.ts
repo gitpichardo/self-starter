@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
   console.log('GET /api/goals - Start');
   try {
     const goals = await mockDb.getGoalsByUserId(DEMO_USER_ID);
-    console.log('Goals fetched:', goals);
+    console.log('Goals fetched:', JSON.stringify(goals, null, 2));
     return NextResponse.json({ goals, isMockDatabase: true });
   } catch (error) {
     console.error('Error in GET /api/goals:', error);
@@ -25,6 +25,8 @@ export async function GET(req: NextRequest) {
       error: 'Failed to fetch goals', 
       details: error instanceof Error ? error.message : String(error) 
     }, { status: 500 });
+  } finally {
+    console.log('GET /api/goals - End');
   }
 }
 
@@ -32,10 +34,10 @@ export async function POST(req: NextRequest) {
   console.log('POST /api/goals - Start');
   try {
     const body = await req.json();
-    console.log('Received body:', body);
+    console.log('Received body:', JSON.stringify(body, null, 2));
 
     const validatedData = goalSchema.parse(body);
-    console.log('Validated data:', validatedData);
+    console.log('Validated data:', JSON.stringify(validatedData, null, 2));
 
     const goalData = {
       ...validatedData,
@@ -44,23 +46,25 @@ export async function POST(req: NextRequest) {
       endDate: validatedData.endDate ? new Date(validatedData.endDate) : null,
     };
 
-    console.log('Goal data to be created:', goalData);
+    console.log('Goal data to be created:', JSON.stringify(goalData, null, 2));
 
     const newGoal = await mockDb.createGoal(goalData as any);
-    console.log('Created goal:', newGoal);
+    console.log('Created goal:', JSON.stringify(newGoal, null, 2));
 
     return NextResponse.json({ goal: newGoal, isMockDatabase: true }, { status: 201 });
   } catch (error) {
     console.error('Error in POST /api/goals:', error);
     if (error instanceof z.ZodError) {
+      console.error('Validation error:', JSON.stringify(error.errors, null, 2));
       return NextResponse.json({ error: 'Validation Error', details: error.errors }, { status: 400 });
     }
-    // Log the full error object
-    console.error('Full error object:', JSON.stringify(error, Object.getOwnPropertyNames(error)));
+    console.error('Full error object:', JSON.stringify(error, Object.getOwnPropertyNames(error), 2));
     return NextResponse.json({ 
       error: 'Failed to create goal', 
       details: error instanceof Error ? error.message : String(error),
-      stack: error instanceof Error ? error.stack : String(error)
+      stack: error instanceof Error ? error.stack : undefined
     }, { status: 500 });
+  } finally {
+    console.log('POST /api/goals - End');
   }
 }

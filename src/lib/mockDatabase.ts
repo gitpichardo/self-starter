@@ -125,13 +125,6 @@ class MockDatabase {
     return this.users.find(user => user.email === email) || null;
   }
 
-  async getGoalsByUserId(userId: string): Promise<Goal[]> {
-    console.log(`MockDB: Fetching goals for user ${userId}`);
-    const userGoals = this.goals.filter(goal => goal.userId === userId);
-    console.log(`MockDB: Found ${userGoals.length} goals`);
-    return userGoals;
-  }
-
   async createGoal(goalData: Omit<Goal, 'id' | 'createdAt' | 'updatedAt'>): Promise<Goal> {
     try {
       const newGoal: Goal = {
@@ -139,14 +132,27 @@ class MockDatabase {
         ...goalData,
         createdAt: new Date(),
         updatedAt: new Date(),
+        // Ensure these fields are properly typed
+        startDate: new Date(goalData.startDate),
+        endDate: goalData.endDate ? new Date(goalData.endDate) : null,
+        status: goalData.status as 'Not Started' | 'In Progress' | 'Completed',
       };
       this.goals.push(newGoal);
-      console.log(`MockDB: Created new goal:`, newGoal);
+      console.log(`MockDB: Created new goal:`, JSON.stringify(newGoal, null, 2));
+      await this.saveData();
       return newGoal;
     } catch (error) {
       console.error('Error in MockDB createGoal:', error);
       throw new Error(`Failed to create goal in mock database: ${error instanceof Error ? error.message : String(error)}`);
     }
+  }
+
+  async getGoalsByUserId(userId: string): Promise<Goal[]> {
+    console.log(`MockDB: Fetching goals for user ${userId}`);
+    const userGoals = this.goals.filter(goal => goal.userId === userId);
+    console.log(`MockDB: Found ${userGoals.length} goals`);
+    console.log('Goals:', JSON.stringify(userGoals, null, 2));
+    return userGoals;
   }
 
   async findGoalById(id: string): Promise<Goal | null> {

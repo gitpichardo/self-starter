@@ -9,7 +9,7 @@ const GoalInputForm: React.FC<GoalInputFormProps> = ({ onGoalCreated }) => {
   const [description, setDescription] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [status, setStatus] = useState('Not Started'); // Default value
+  const [status, setStatus] = useState('Not Started');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -23,11 +23,13 @@ const GoalInputForm: React.FC<GoalInputFormProps> = ({ onGoalCreated }) => {
     try {
       const goalData = {
         title,
-        description: description || undefined, // Send undefined if empty
+        description: description || undefined,
         startDate,
-        endDate: endDate || undefined, // Send undefined if empty
+        endDate: endDate || undefined,
         status,
       };
+
+      console.log('Submitting goal data:', JSON.stringify(goalData, null, 2));
 
       const response = await fetch('/api/goals', {
         method: 'POST',
@@ -37,15 +39,18 @@ const GoalInputForm: React.FC<GoalInputFormProps> = ({ onGoalCreated }) => {
         body: JSON.stringify(goalData),
       });
 
+      console.log('Response status:', response.status);
+
+      const responseData = await response.json();
+      console.log('Response data:', JSON.stringify(responseData, null, 2));
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(`Failed to create goal: ${JSON.stringify(errorData)}`);
+        throw new Error(`Failed to create goal: ${JSON.stringify(responseData)}`);
       }
 
-      const data = await response.json();
-      console.log('Goal created:', data);
+      console.log('Goal created successfully:', responseData);
       setSuccessMessage('Goal created successfully!');
-      onGoalCreated(data); // Trigger refresh of goal list
+      onGoalCreated(responseData);
 
       // Clear form after successful submission
       setTitle('');
@@ -55,6 +60,7 @@ const GoalInputForm: React.FC<GoalInputFormProps> = ({ onGoalCreated }) => {
       setStatus('Not Started');
 
     } catch (err) {
+      console.error('Error in form submission:', err);
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setIsSubmitting(false);
