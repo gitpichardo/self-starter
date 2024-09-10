@@ -35,6 +35,7 @@ export default function DashboardPage() {
         throw new Error(`HTTP error! status: ${response.status}, message: ${JSON.stringify(errorData)}`);
       }
       const data = await response.json();
+      console.log('Fetched goals:', data);
       setGoals(data.goals);
       setIsMockDatabase(data.isMockDatabase);
     } catch (error) {
@@ -54,10 +55,25 @@ export default function DashboardPage() {
   }, [status, router, fetchGoals]);
 //check if the user is in demo mode
 
-  const handleGoalCreated = useCallback(() => {
-    fetchGoals();
-  }, [fetchGoals]);
-
+const handleGoalCreated = useCallback(async (goalData: any) => {
+  try {
+    const response = await fetch('/api/goals', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(goalData),
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(`HTTP error! status: ${response.status}, message: ${JSON.stringify(errorData)}`);
+    }
+    await fetchGoals();
+  } catch (error) {
+    console.error('Error creating goal:', error);
+    setError(error instanceof Error ? error.message : 'An unexpected error occurred while creating the goal');
+  }
+}, [fetchGoals]);
   if (status === 'loading') {
     return <LoadingSpinner />;
   }

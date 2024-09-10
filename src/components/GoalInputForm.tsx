@@ -1,7 +1,7 @@
 import React, { useState, FormEvent, ChangeEvent } from 'react';
 
 interface GoalInputFormProps {
-  onGoalCreated: () => void;
+  onGoalCreated: (goalData: any) => Promise<void>;
 }
 
 const GoalInputForm: React.FC<GoalInputFormProps> = ({ onGoalCreated }) => {
@@ -36,7 +36,7 @@ const GoalInputForm: React.FC<GoalInputFormProps> = ({ onGoalCreated }) => {
       }
 
       setSuccessMessage('Goal created successfully!');
-      onGoalCreated(); // Trigger refresh of goal list
+      onGoalCreated(data); // Trigger refresh of goal list
 
       // Clear form after successful submission
       setTitle('');
