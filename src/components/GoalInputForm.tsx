@@ -9,7 +9,7 @@ const GoalInputForm: React.FC<GoalInputFormProps> = ({ onGoalCreated }) => {
   const [description, setDescription] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState('Not Started'); // Default value
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -21,20 +21,27 @@ const GoalInputForm: React.FC<GoalInputFormProps> = ({ onGoalCreated }) => {
     setSuccessMessage(null);
 
     try {
+      const goalData = {
+        title,
+        description: description || undefined, // Send undefined if empty
+        startDate,
+        endDate: endDate || undefined, // Send undefined if empty
+        status,
+      };
+
       const response = await fetch('/api/goals', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ title, description, startDate, endDate, status }),
+        body: JSON.stringify(goalData),
       });
-
-      
 
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(`Failed to create goal: ${JSON.stringify(errorData)}`);
       }
+
       const data = await response.json();
       console.log('Goal created:', data);
       setSuccessMessage('Goal created successfully!');
@@ -45,7 +52,7 @@ const GoalInputForm: React.FC<GoalInputFormProps> = ({ onGoalCreated }) => {
       setDescription('');
       setStartDate('');
       setEndDate('');
-      setStatus('');
+      setStatus('Not Started');
 
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
@@ -85,7 +92,6 @@ const GoalInputForm: React.FC<GoalInputFormProps> = ({ onGoalCreated }) => {
           <input
             id="startDate"
             type="date"
-            placeholder="Start Date"
             value={startDate}
             onChange={(e: ChangeEvent<HTMLInputElement>) => setStartDate(e.target.value)}
             required
@@ -99,7 +105,6 @@ const GoalInputForm: React.FC<GoalInputFormProps> = ({ onGoalCreated }) => {
           <input
             id="endDate"
             type="date"
-            placeholder="End Date (optional)"
             value={endDate}
             onChange={(e: ChangeEvent<HTMLInputElement>) => setEndDate(e.target.value)}
             className="w-full px-3 py-2 border rounded text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-primary-500"
@@ -112,7 +117,6 @@ const GoalInputForm: React.FC<GoalInputFormProps> = ({ onGoalCreated }) => {
             required
             className="w-full px-3 py-2 border rounded text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-primary-500"
           >
-            <option value="">Select status</option>
             <option value="Not Started">Not Started</option>
             <option value="In Progress">In Progress</option>
             <option value="Completed">Completed</option>

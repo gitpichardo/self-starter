@@ -5,9 +5,9 @@ import { z } from 'zod';
 const goalSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   description: z.string().nullable().optional(),
-  startDate: z.string(),
+  startDate: z.string().min(1, 'Start date is required'),
   endDate: z.string().nullable().optional(),
-  status: z.string(),
+  status: z.enum(['Not Started', 'In Progress', 'Completed']),
   roadmap: z.string().nullable().optional(),
 });
 
