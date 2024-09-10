@@ -74,6 +74,7 @@ const handleGoalCreated = useCallback(async (goalData: any) => {
     setError(error instanceof Error ? error.message : 'An unexpected error occurred while creating the goal');
   }
 }, [fetchGoals]);
+
   if (status === 'loading') {
     return <LoadingSpinner />;
   }
@@ -93,6 +94,7 @@ const handleGoalCreated = useCallback(async (goalData: any) => {
         </p>
       )}
       
+      console.log('Rendering DashboardPage, goals:', goals)
       <GoalInputForm onGoalCreated={handleGoalCreated} />
       
       <h2 className="text-xl font-semibold mb-2 mt-8">Your Goals</h2>

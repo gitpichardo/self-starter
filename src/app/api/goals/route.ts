@@ -44,6 +44,8 @@ export async function POST(req: NextRequest) {
       endDate: validatedData.endDate ? new Date(validatedData.endDate) : null,
     };
 
+    console.log('Goal data to be created:', goalData);
+
     const newGoal = await mockDb.createGoal(goalData as any);
     console.log('Created goal:', newGoal);
 
@@ -53,6 +55,12 @@ export async function POST(req: NextRequest) {
     if (error instanceof z.ZodError) {
       return NextResponse.json({ error: 'Validation Error', details: error.errors }, { status: 400 });
     }
-    return NextResponse.json({ error: 'Failed to create goal', details: error instanceof Error ? error.message : String(error) }, { status: 500 });
+    // Log the full error object
+    console.error('Full error object:', JSON.stringify(error, Object.getOwnPropertyNames(error)));
+    return NextResponse.json({ 
+      error: 'Failed to create goal', 
+      details: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : String(error)
+    }, { status: 500 });
   }
 }

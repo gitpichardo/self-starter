@@ -29,12 +29,14 @@ const GoalInputForm: React.FC<GoalInputFormProps> = ({ onGoalCreated }) => {
         body: JSON.stringify({ title, description, startDate, endDate, status }),
       });
 
-      const data = await response.json();
+      
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to create goal');
+        const errorData = await response.json();
+        throw new Error(`Failed to create goal: ${JSON.stringify(errorData)}`);
       }
-
+      const data = await response.json();
+      console.log('Goal created:', data);
       setSuccessMessage('Goal created successfully!');
       onGoalCreated(data); // Trigger refresh of goal list
 

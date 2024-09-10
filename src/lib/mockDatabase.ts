@@ -133,16 +133,20 @@ class MockDatabase {
   }
 
   async createGoal(goalData: Omit<Goal, 'id' | 'createdAt' | 'updatedAt'>): Promise<Goal> {
-    const newGoal: Goal = {
-      id: uuidv4(),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      ...goalData,
-    };
-    this.goals.push(newGoal);
-    console.log(`MockDB: Created new goal with id ${newGoal.id}`);
-    await this.saveData();
-    return newGoal;
+    try {
+      const newGoal: Goal = {
+        id: uuidv4(),
+        ...goalData,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+      this.goals.push(newGoal);
+      console.log(`MockDB: Created new goal:`, newGoal);
+      return newGoal;
+    } catch (error) {
+      console.error('Error in MockDB createGoal:', error);
+      throw new Error(`Failed to create goal in mock database: ${error instanceof Error ? error.message : String(error)}`);
+    }
   }
 
   async findGoalById(id: string): Promise<Goal | null> {
