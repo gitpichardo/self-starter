@@ -2,7 +2,7 @@
 
 ## Description
 
-This application is a comprehensive self-help tool designed to assist users in setting goals, creating personalized roadmaps, and tracking their progress. Built with JigsawStacks' AI-powered APIs, Next.js and Prisma, it offers a robust and user-friendly interface for personal development.
+This application is a comprehensive self-help tool designed to assist users in setting goals, creating personalized roadmaps, and tracking their progress. Built with JigsawStacks' AI-powered APIs, Next.js and Prisma, it offers a robust and user-friendly interface for personal development. View the demo walkthrough [here](https://www.loom.com/share/ea29df654c884765b41796bad76c8e5a?sid=0851d793-8d2b-4929-85b6-b7403dc29b8a).
 
 ## Features
 
